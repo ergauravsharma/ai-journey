@@ -1,0 +1,1 @@
+print("Hello, AI Journey - Day 1 Completed!")
