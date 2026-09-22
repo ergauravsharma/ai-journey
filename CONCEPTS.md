@@ -146,3 +146,17 @@ pip install -r requirements.txt # recreate the environment elsewhere
 - *Definition*: asking the model to self-report how certain it is, alongside its answer.
 - *Why it matters*: in production, low-confidence classifications can be routed to a human for review instead of auto-processed — this is how real triage systems avoid silently mishandling ambiguous cases.
 - *Example*: ticket3 (ambiguous — refund complaint) got confidence 0.92, notably lower than the clear-cut tickets (0.98) — a useful threshold to flag for review.
+
+## Day 9 — Function/tool calling
+
+**Tool calling**
+- *Definition*: describing a real function to the model (name, purpose, parameters) so it can decide, on its own, when to call it — the model itself never executes the function; it just tells your code what to call and with what arguments.
+- *Why it matters*: LLMs are unreliable at things like precise math, live data lookups, or actions in the real world (sending an email, querying a database). Tool calling lets the model delegate those to code you control and trust.
+- *Example*: asked "347 × 892 − 1500?", the model returned `function_call: calculate({'expression': '347 * 892 - 1500'})` instead of guessing the answer itself — your real `calculate()` function computed it, and the model's final response used that actual result.
+
+**The tool-calling flow (4 steps)**
+1. Send the prompt + tool description to the model.
+2. Model responds with a `function_call` (name + arguments) instead of a direct answer, if it decides a tool is needed.
+3. Your code runs the real function.
+4. You send the function's result back to the model, which produces a final natural-language answer incorporating it.
+- *Why it matters*: this exact loop — model decides → your code executes → model responds — is the foundation of every "agent" from Week 7 onward. An agent is essentially this loop repeated with multiple tools available.
