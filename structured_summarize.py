@@ -21,16 +21,21 @@ def summarize_structured(text: str, max_retries: int = 3) -> Summary:
     """Send text to the LLM and return a validated Summary object."""
 
     system_instruction = (
-        "You are a summarizer. Given a text, return a JSON object with: "
-        "'title' (a short headline), 'bullets' (exactly 3 key points as a list of strings), "
-        "and 'sentiment' (one of: positive, neutral, negative)."
+        "You are an expert news editor with 15 years of experience distilling complex articles "
+       "into sharp, accurate summaries for busy readers.\n\n"
+       "The text to summarize will be provided between triple quotes. First, identify the main "
+       "topic and the 2-3 most important supporting points. Then produce a JSON object with:\n"
+       "- 'title': a short, accurate headline (not clickbait)\n"
+       "- 'bullets': exactly 3 key points as a list of strings, each a complete sentence\n"
+       "- 'sentiment': one of 'positive', 'neutral', or 'negative', based on the overall tone of the text\n\n"
+       "Only summarize what is explicitly stated in the text. Do not add outside information."
     )
 
     for attempt in range(1, max_retries + 1):
         try:
             response = client.models.generate_content(
                 model="gemini-3.6-flash",
-                contents=text,
+                contents=f'"""{text}"""',
                 config=types.GenerateContentConfig(
                     system_instruction=system_instruction,
                     temperature=0.2,

@@ -106,3 +106,20 @@ pip install -r requirements.txt # recreate the environment elsewhere
   result = response.parsed  # already a validated Summary object, not raw text
 ```
   If the model's output didn't match the schema (wrong types, missing fields), pydantic would raise a validation error instead of your code silently breaking later.
+
+  ## Day 7 — Prompting patterns
+
+**Chain-of-thought**
+- *Definition*: instructing the model to reason through intermediate steps before producing a final answer, rather than jumping straight to the output.
+- *Why it matters*: forces more careful reasoning, which improves accuracy on anything requiring analysis, not just simple lookup.
+- *Example*: "First, identify the main topic and key points. Then produce the JSON summary." — vs. just "Summarize this as JSON," which skips the reasoning step.
+
+**Role prompting**
+- *Definition*: assigning the model a persona or expertise level in the system instruction, shaping its tone and judgment.
+- *Why it matters*: "You are an expert news editor" produces more careful, professional output than a generic instruction — the model calibrates its behavior to the assigned role.
+- *Example*: `"You are an expert news editor with 15 years of experience..."` vs. plain `"You are a summarizer."`
+
+**Delimiters for multi-part prompts**
+- *Definition*: using triple quotes, XML tags, etc. to clearly mark where instructions end and content begins.
+- *Why it matters*: prevents the model from confusing your instructions with the text it's processing — especially important as prompts get longer/more complex.
+- *Example*: `contents=f'"""{text}"""'` — wraps the raw article text so it's unambiguous what's "the content to summarize" vs "the instruction."
