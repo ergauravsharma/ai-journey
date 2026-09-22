@@ -123,3 +123,26 @@ pip install -r requirements.txt # recreate the environment elsewhere
 - *Definition*: using triple quotes, XML tags, etc. to clearly mark where instructions end and content begins.
 - *Why it matters*: prevents the model from confusing your instructions with the text it's processing — especially important as prompts get longer/more complex.
 - *Example*: `contents=f'"""{text}"""'` — wraps the raw article text so it's unambiguous what's "the content to summarize" vs "the instruction."
+
+
+## Day 8 — Classification + schema validation
+
+**Enums for fixed categories**
+- *Definition*: a Python `Enum` restricts a field to an exact, predefined set of values — the model (and pydantic) can't produce anything outside that set.
+- *Why it matters*: classification tasks need a closed set of labels (e.g., billing/technical/general/complaint) — free text would let the model invent inconsistent category names.
+- *Example*:
+```python
+  class Category(str, Enum):
+      BILLING = "billing"
+      TECHNICAL = "technical"
+```
+
+**Handling validation errors separately from API errors**
+- *Definition*: catching `ValidationError` (bad/unexpected shape from the model) as a distinct case from general exceptions (network issues, API failures).
+- *Why it matters*: these are different failure modes needing different handling — a validation error might mean you need a better prompt, while a network error just needs a retry.
+- *Example*: `except ValidationError as e:` before the general `except Exception as e:`.
+
+**Confidence scores as a review signal**
+- *Definition*: asking the model to self-report how certain it is, alongside its answer.
+- *Why it matters*: in production, low-confidence classifications can be routed to a human for review instead of auto-processed — this is how real triage systems avoid silently mishandling ambiguous cases.
+- *Example*: ticket3 (ambiguous — refund complaint) got confidence 0.92, notably lower than the clear-cut tickets (0.98) — a useful threshold to flag for review.
