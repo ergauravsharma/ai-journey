@@ -9,12 +9,10 @@ One concept per entry: **what it is**, **why it matters**, **example**. Review b
 **Git workflow**
 - *Definition*: Git tracks changes to your code over time. Three core commands move a change from your laptop to GitHub.
 - *Why it matters*: gives you version history and lets you undo mistakes, and is how every real software team collaborates.
-- *Example*:
+- *Example*:git add hello.py # stage the file (mark it ready to save)
+git commit -m "message" # save a snapshot locally, with a description
+git push # upload that snapshot to GitHub
 
-
-  In code: `load_dotenv()` reads `.env` into memory, then `os.environ["GOOGLE_API_KEY"]` retrieves it — the key never appears in your actual script.
-
----
 
 ---
 
@@ -24,6 +22,29 @@ One concept per entry: **what it is**, **why it matters**, **example**. Review b
 - *Definition*: an isolated copy of Python + packages, separate from your system-wide Python install.
 - *Why it matters*: different projects often need different (conflicting) versions of the same package. A venv keeps them from interfering with each other.
 - *Example*:
+python -m venv venv # create it (once per project)
+venv\Scripts\activate # turn it on (every time you work on the project)
+
+  You know it's active when your terminal prompt shows `(venv)` at the start.
+
+**Type hints**
+- *Definition*: annotations that say what type a function expects in and returns, without enforcing it at runtime.
+- *Why it matters*: makes code self-documenting and lets your editor/tools catch mistakes before you run the code.
+- *Example*:
+```python
+  def add(a: int, b: int) -> int:
+      return a + b
+```
+  Here, `a` and `b` should be integers, and the function returns an integer. If you pass a string by mistake, your editor will warn you.
+
+**requirements.txt**
+- *Definition*: a text file listing your project's packages and exact versions.
+- *Why it matters*: anyone (including future-you on a new laptop) can recreate your exact environment with one command.
+- *Example*:
+
+pip freeze > requirements.txt # generate it from what's currently installed
+pip install -r requirements.txt # recreate the environment elsewhere
+
 
 ---
 
@@ -37,8 +58,18 @@ One concept per entry: **what it is**, **why it matters**, **example**. Review b
 **.env + .gitignore**
 - *Definition*: `.env` is a file holding secret values (like API keys) as `KEY=value` pairs. `.gitignore` tells Git which files to never track.
 - *Why it matters*: API keys pushed to a public GitHub repo can be stolen and abused (people scan GitHub for exposed keys within minutes). Keeping `.env` out of Git prevents that.
-- *Example*: pip freeze > requirements.txt # generate it from what's currently installed
-pip install -r requirements.txt # recreate the environment elsewhere
+- *Example*:
+.env
+
+GOOGLE_API_KEY=abc123...
+
+.gitignore
+
+.env
+
+  In code: `load_dotenv()` reads `.env` into memory, then `os.environ["GOOGLE_API_KEY"]` retrieves it — the key never appears in your actual script.
+
+---
 
 ## Day 4 — Real LLM calls, error handling, retry
 
@@ -59,7 +90,7 @@ pip install -r requirements.txt # recreate the environment elsewhere
 
 **Tokens & max_output_tokens**
 - *Definition*: a token is roughly ¾ of a word — the unit models read and write in. `max_output_tokens` caps how many tokens the response can use.
-- *Why it matters*: too low a cap can cut off the answer entirely — this bit you today! Reasoning models (like `gemini-3.6-flash`) use tokens for internal "thinking" before the visible answer, so they need a bigger budget than non-reasoning models.
+- *Why it matters*: too low a cap can cut off the answer entirely — this bit you on Day 4! Reasoning models (like `gemini-3.6-flash`) use tokens for internal "thinking" before the visible answer, so they need a bigger budget than non-reasoning models.
 - *Example*: you set `max_output_tokens=300`, but the model spent 288 tokens "thinking" and only had 12 left for the real answer → truncated output. Raising it to `1024` fixed it.
 
 **Retry logic**
@@ -77,12 +108,6 @@ pip install -r requirements.txt # recreate the environment elsewhere
 ```
 
 ---
-
-## Day 5 — Structured output
-*(to fill in once we finish today)*
-
----
-
 
 ## Day 5 — Structured output
 
@@ -107,7 +132,28 @@ pip install -r requirements.txt # recreate the environment elsewhere
 ```
   If the model's output didn't match the schema (wrong types, missing fields), pydantic would raise a validation error instead of your code silently breaking later.
 
-  ## Day 7 — Prompting patterns
+---
+
+## Day 6 — Prompting basics
+
+**Principle 1: Write clear instructions**
+- *Definition*: separate instructions from content using delimiters (triple quotes `"""`, backslashes, angle brackets `< >`, XML tags), and ask for structured output (JSON, HTML) when the response needs to be parsed by code.
+- *Why it matters*: prevents the model from confusing your instructions with the input text, and makes output usable by downstream code instead of just human-readable.
+- *Example*: `Summarize the text between the triple quotes below: """<text>"""` — unambiguous about what's instruction vs. content.
+
+**Principle 2: Give the model time to think**
+- *Definition*: break complex tasks into steps and ask the model to reason through them, rather than demanding an immediate final answer.
+- *Why it matters*: reduces rushed or wrong answers, especially on multi-step problems like math or analysis.
+- *Example*: "A store had 120 apples, sold 45% Monday, sold 30 more Tuesday. Think step by step before giving the final answer." → model worked through 120 → 54 sold → 66 left → 30 sold → 36 final, instead of guessing a number directly.
+
+**Iterative prompt development**
+- *Definition*: write a first-draft prompt → check the result → identify what's wrong (length, tone, format, missing info) → refine → repeat.
+- *Why it matters*: the first prompt rarely gives the ideal output — treating prompting as an iterative process (like debugging code) gets much better results than expecting perfection on the first try.
+- *Example*: common fixes include clarifying instructions, giving more "thinking room," or adding an example (few-shot) to steer the format/tone.
+
+---
+
+## Day 7 — Prompting patterns
 
 **Chain-of-thought**
 - *Definition*: instructing the model to reason through intermediate steps before producing a final answer, rather than jumping straight to the output.
@@ -124,6 +170,7 @@ pip install -r requirements.txt # recreate the environment elsewhere
 - *Why it matters*: prevents the model from confusing your instructions with the text it's processing — especially important as prompts get longer/more complex.
 - *Example*: `contents=f'"""{text}"""'` — wraps the raw article text so it's unambiguous what's "the content to summarize" vs "the instruction."
 
+---
 
 ## Day 8 — Classification + schema validation
 
@@ -145,7 +192,9 @@ pip install -r requirements.txt # recreate the environment elsewhere
 **Confidence scores as a review signal**
 - *Definition*: asking the model to self-report how certain it is, alongside its answer.
 - *Why it matters*: in production, low-confidence classifications can be routed to a human for review instead of auto-processed — this is how real triage systems avoid silently mishandling ambiguous cases.
-- *Example*: ticket3 (ambiguous — refund complaint) got confidence 0.92, notably lower than the clear-cut tickets (0.98) — a useful threshold to flag for review.
+- *Example*: an ambiguous refund complaint got confidence 0.92, notably lower than clear-cut tickets (0.98) — a useful threshold to flag for review.
+
+---
 
 ## Day 9 — Function/tool calling
 
@@ -160,3 +209,20 @@ pip install -r requirements.txt # recreate the environment elsewhere
 3. Your code runs the real function.
 4. You send the function's result back to the model, which produces a final natural-language answer incorporating it.
 - *Why it matters*: this exact loop — model decides → your code executes → model responds — is the foundation of every "agent" from Week 7 onward. An agent is essentially this loop repeated with multiple tools available.
+
+---
+
+## Day 10 — Triage core
+*(to fill in once we finish today)*
+
+---
+## Day 10 — Triage core + real-world API limits
+
+**Combining classification + generation in one schema**
+- *Definition*: a single pydantic schema can mix fixed-category fields (category, priority, sentiment as Enums) with free-text generative fields (draft_reply) in one response.
+- *Why it matters*: real applications often need both — structured data for routing/logging, and natural text for the human-facing output — and getting both in one call is more efficient than two separate requests.
+
+**Differentiating error types for retry strategy**
+- *Definition*: not all API failures are the same — rate limits (429), server overload (503), and daily quota exhaustion all need different handling.
+- *Why it matters*: a 503 is worth retrying with backoff (the server will recover). A daily quota error (429 with "PerDay" in the quota ID) will NOT resolve no matter how many times or how long you retry — you have to wait for the reset window or switch models/providers. Recognizing this distinction prevents wasted retries and wasted time.
+- *Example*: today's run showed both — a `PerMinute` 429 that transient backoff could theoretically fix, and later a `PerDay` 429 that no retry within the same session could resolve.
