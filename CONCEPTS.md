@@ -243,3 +243,19 @@ GOOGLE_API_KEY=abc123...
       col1.metric("Category", result.category.value)  # output
 ```
   Running it: `streamlit run app.py` — auto-opens a browser tab at `localhost:8501`, and the app reloads live as you edit the file.
+
+  ## Day 13 — Polish: error handling, guardrails, example inputs
+
+**Graceful error handling in a UI**
+- *Definition*: wrapping risky operations (like an API call) in `try/except` inside the UI layer, so failures show a user-friendly message instead of crashing the app or exposing a raw traceback.
+- *Why it matters*: real users will hit real failures (bad API key, network issue, rate limit) — a crashed app or a scary stack trace looks broken and unprofessional; a calm error message looks intentional.
+- *Example*: tested by temporarily breaking the API key — confirmed the app showed "Something went wrong... Please try again" instead of an unhandled exception, with technical details available but de-emphasized underneath.
+
+**Input guardrails**
+- *Definition*: validating user input before sending it to the model — checking for empty input, excessive length, etc.
+- *Why it matters*: prevents wasted API calls (and quota) on obviously invalid input, and gives immediate feedback instead of a confusing delay or error.
+- *Example*: empty ticket text → warning shown immediately, no API call made at all.
+
+**Example inputs via `st.session_state`**
+- *Definition*: pre-filled example buttons that populate the input field when clicked, using Streamlit's session state to control widget values.
+- *Why it matters*: lowers the barrier for someone trying your app for the first time — they can see it work before writing their own input, which matters a lot for a portfolio demo.
