@@ -2,10 +2,10 @@
 
 An AI-powered app that classifies customer support tickets (category, priority, sentiment) and drafts a reply — built with Python, LangChain, Google Gemini, and Streamlit.
 
-**🔗 Live demo:** [gaurav-triage.streamlit.app](https://gaurav-triage.streamlit.app)
-
+   **🔗 Live demo:** [ai-journey-60-days.streamlit.app](https://ai-journey-60-days.streamlit.app)
+   
 <!-- ![Demo](demo.gif) -->
-   *(Demo GIF coming soon — see the [live app](https://gaurav-triage.streamlit.app) to try it yourself)*
+   *(Demo GIF coming soon — see the [live app](https://ai-journey-60-days.streamlit.app) to try it yourself)*
 
 ## Problem
 
