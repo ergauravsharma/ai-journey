@@ -226,3 +226,20 @@ GOOGLE_API_KEY=abc123...
 - *Definition*: not all API failures are the same — rate limits (429), server overload (503), and daily quota exhaustion all need different handling.
 - *Why it matters*: a 503 is worth retrying with backoff (the server will recover). A daily quota error (429 with "PerDay" in the quota ID) will NOT resolve no matter how many times or how long you retry — you have to wait for the reset window or switch models/providers. Recognizing this distinction prevents wasted retries and wasted time.
 - *Example*: today's run showed both — a `PerMinute` 429 that transient backoff could theoretically fix, and later a `PerDay` 429 that no retry within the same session could resolve.
+
+
+
+## Day 12 — Streamlit UI
+
+**Streamlit basics: inputs, outputs, layout**
+- *Definition*: Streamlit turns a plain Python script into a web app — no HTML/CSS/JS needed. Widgets like `st.text_area()` and `st.button()` handle input; `st.write()`, `st.metric()`, `st.columns()` handle output and layout.
+- *Why it matters*: this is what turns a script only you can run into something anyone can open in a browser and use — the difference between a personal tool and a shareable portfolio piece.
+- *Example*:
+```python
+  ticket_text = st.text_area("Ticket text")   # input
+  if st.button("Triage Ticket"):              # only runs on click, not every keystroke
+      result = triage(ticket_text)            # reuse existing logic
+      col1, col2, col3 = st.columns(3)        # layout
+      col1.metric("Category", result.category.value)  # output
+```
+  Running it: `streamlit run app.py` — auto-opens a browser tab at `localhost:8501`, and the app reloads live as you edit the file.
