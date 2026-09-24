@@ -259,3 +259,10 @@ GOOGLE_API_KEY=abc123...
 **Example inputs via `st.session_state`**
 - *Definition*: pre-filled example buttons that populate the input field when clicked, using Streamlit's session state to control widget values.
 - *Why it matters*: lowers the barrier for someone trying your app for the first time — they can see it work before writing their own input, which matters a lot for a portfolio demo.
+
+## Day 14 — Deploy (Streamlit Community Cloud)
+
+**Deploying with secrets management**
+- *Definition*: Streamlit Community Cloud deploys directly from a GitHub repo, auto-redeploying on every push to `main`. Secrets (like API keys) are stored separately in the platform's encrypted secrets manager (`st.secrets`), never in your code or `.env` (which stays local-only, gitignored).
+- *Why it matters*: this is how real deployed apps handle secrets — the deployment platform, not your codebase, holds the sensitive credentials.
+- *Example*: `get_api_key()` checks `st.secrets["GOOGLE_API_KEY"]` first (works on Streamlit Cloud), falling back to `os.environ["GOOGLE_API_KEY"]` (works locally via `.env`) — one function, works in both environments.
