@@ -266,3 +266,16 @@ GOOGLE_API_KEY=abc123...
 - *Definition*: Streamlit Community Cloud deploys directly from a GitHub repo, auto-redeploying on every push to `main`. Secrets (like API keys) are stored separately in the platform's encrypted secrets manager (`st.secrets`), never in your code or `.env` (which stays local-only, gitignored).
 - *Why it matters*: this is how real deployed apps handle secrets — the deployment platform, not your codebase, holds the sensitive credentials.
 - *Example*: `get_api_key()` checks `st.secrets["GOOGLE_API_KEY"]` first (works on Streamlit Cloud), falling back to `os.environ["GOOGLE_API_KEY"]` (works locally via `.env`) — one function, works in both environments.
+
+
+## Day 16 — Embeddings & vector search (RAG foundations)
+
+**Embeddings**
+- *Definition*: a way of converting text into a list of numbers (a vector) that captures its meaning — similar meanings produce similar vectors, regardless of exact word overlap.
+- *Why it matters*: this is what makes RAG (Retrieval-Augmented Generation) possible — you can search a document set by *meaning*, not just exact keyword matching.
+- *Example*: `"The cat sat on the mat"` and `"A feline rested on the rug"` share almost no words but scored 0.77 similarity — much higher than either sentence compared to an unrelated one about pizza (0.59-0.62).
+
+**Cosine similarity**
+- *Definition*: a formula measuring how close two vectors are in "meaning space" — ranges from -1 (opposite) to 1 (identical), with 0 meaning unrelated.
+- *Why it matters*: this is the actual math behind "find the most relevant document chunk" in a RAG system — you embed the user's question, embed every chunk, and rank chunks by cosine similarity to the question.
+- *Example*: `cosine_similarity(a, b) = dot(a, b) / (norm(a) * norm(b))` — in practice, real-world similarity scores are rarely dramatic (0.9 vs 0.1); what matters is *relative ranking* between candidates, not the absolute number.
