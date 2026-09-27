@@ -53,4 +53,3 @@ streamlit run app.py
 
 ---
 
-*Built as Project 1 of a 60-day journey from senior software engineer to GenAI/Agentic developer.*
