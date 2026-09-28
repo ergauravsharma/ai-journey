@@ -1,0 +1,11 @@
+   CloudDesk Pricing Plans
+
+   Free plan: $0 per month. Includes 1 user, 2 GB of storage, and community support only.
+
+   Basic plan: $12 per month per user. Includes up to 5 users, 50 GB of storage, and email support with a 48-hour response time.
+
+   Pro plan: $29 per month per user. Includes unlimited users, 500 GB of storage, priority email and chat support with a 4-hour response time, and advanced reporting.
+
+   Enterprise plan: custom pricing. Includes unlimited storage, a dedicated account manager, single sign-on (SSO), and a 99.9% uptime guarantee.
+
+   Annual billing saves 20% compared to monthly billing. You can upgrade or downgrade your plan at any time, and changes take effect at the start of your next billing cycle.

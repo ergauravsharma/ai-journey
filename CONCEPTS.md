@@ -279,3 +279,24 @@ GOOGLE_API_KEY=abc123...
 - *Definition*: a formula measuring how close two vectors are in "meaning space" — ranges from -1 (opposite) to 1 (identical), with 0 meaning unrelated.
 - *Why it matters*: this is the actual math behind "find the most relevant document chunk" in a RAG system — you embed the user's question, embed every chunk, and rank chunks by cosine similarity to the question.
 - *Example*: `cosine_similarity(a, b) = dot(a, b) / (norm(a) * norm(b))` — in practice, real-world similarity scores are rarely dramatic (0.9 vs 0.1); what matters is *relative ranking* between candidates, not the absolute number.
+
+## Day 17 — Chunking
+
+**Chunking**
+- *Definition*: splitting a long document into smaller pieces (chunks) before embedding it, because one vector for a whole document blurs its meaning and embedding models have input limits.
+- *Why it matters*: retrieval finds the most relevant chunk for a question, so chunk quality directly limits answer quality. Too big and one chunk mixes several topics; too small and chunks lose the context that makes them findable.
+- *Example*: with `chunk_size=150`, the sentence about Pro plan pricing was split in two, and the second half ("a 4-hour response time, and advanced reporting.") no longer mentioned the Pro plan. With `chunk_size=300`, it stayed whole.
+
+**Chunk overlap**
+- *Definition*: repeating a small amount of text (e.g. 30-50 characters) from the end of one chunk at the start of the next.
+- *Why it matters*: when a long paragraph is split at a word boundary, overlap carries context across the cut so neither chunk starts mid-thought with nothing to anchor it.
+- *Example*: refund chunk 6 ended "...follow the terms written in the" and chunk 7 began "the terms written in the signed agreement..." — the repeated words are the overlap.
+
+**Recursive splitting**
+- *Definition*: a splitter that tries the biggest natural boundary first (paragraphs), then lines, then words, then single characters, only moving down when a piece is still too big.
+- *Why it matters*: chunks end at natural boundaries whenever possible. But it has no sentence-level step, so a long paragraph can still be cut mid-sentence, which is why overlap is needed.
+- *Example*: at `chunk_size=300`, every paragraph fit in one chunk and nothing was cut. At `chunk_size=150`, long paragraphs were split at word boundaries.
+
+**Keeping the source with each chunk**
+- *Definition*: storing the filename and chunk position alongside each chunk's text.
+- *Why it matters*: on Day 22 the chatbot will cite which document an answer came from, which is only possible if every chunk remembers its source.

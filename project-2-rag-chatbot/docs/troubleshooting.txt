@@ -1,0 +1,9 @@
+CloudDesk Troubleshooting Guide
+
+Login problems: If you cannot log in, first reset your password using the "Forgot password" link. Password reset emails expire after 15 minutes. If you still cannot log in after three failed attempts, your account is locked for 30 minutes.
+
+Upload failures: Files larger than 25 MB cannot be uploaded on the Free and Basic plans. Pro plan users can upload files up to 100 MB. Supported formats are PDF, DOCX, PNG, and JPG. If an upload keeps failing, try a different browser or clear your cache.
+
+Mobile app crashes: Make sure you are running the latest version of the CloudDesk app. The app requires Android 10 or later, or iOS 15 or later. If the app still crashes, uninstall and reinstall it. Your data is stored in the cloud and will not be lost.
+
+Sync delays: Changes normally sync within 10 seconds. If sync takes longer than a minute, check your internet connection and confirm the status page shows no ongoing incident.
