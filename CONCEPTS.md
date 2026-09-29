@@ -300,3 +300,10 @@ GOOGLE_API_KEY=abc123...
 **Keeping the source with each chunk**
 - *Definition*: storing the filename and chunk position alongside each chunk's text.
 - *Why it matters*: on Day 22 the chatbot will cite which document an answer came from, which is only possible if every chunk remembers its source.
+
+## Day 18 — Vector store
+
+**Vector store**
+- *Definition*: a database built to hold embeddings and, given a new embedding, quickly find the most similar ones — the storage and search engine version of Day 16's manual cosine similarity loop.
+- *Why it matters*: a real document set can have thousands of chunks. Comparing a question's embedding against every one by hand doesn't scale; a vector store is built to do that lookup efficiently.
+- *Example*: `Chroma.from_texts(texts=texts, embedding=embeddings, metadatas=metadatas, persist_directory=...)` embeds every chunk and saves both the vectors and their metadata (source, chunk_id) to disk in

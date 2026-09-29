@@ -3,3 +3,4 @@ venv/
 __pycache__/
 api_key.txt
 chunks_output.txt
+chroma_db/
