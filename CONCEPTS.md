@@ -307,3 +307,14 @@ GOOGLE_API_KEY=abc123...
 - *Definition*: a database built to hold embeddings and, given a new embedding, quickly find the most similar ones — the storage and search engine version of Day 16's manual cosine similarity loop.
 - *Why it matters*: a real document set can have thousands of chunks. Comparing a question's embedding against every one by hand doesn't scale; a vector store is built to do that lookup efficiently.
 - *Example*: `Chroma.from_texts(texts=texts, embedding=embeddings, metadatas=metadatas, persist_directory=...)` embeds every chunk and saves both the vectors and their metadata (source, chunk_id) to disk in
+## Day 19 — Retrieval
+
+**Retrieval**
+- *Definition*: embedding a question with the same model used for the chunks, then asking the vector store for the top-k chunks whose embeddings are closest to the question's embedding.
+- *Why it matters*: this is the "R" in RAG. It's what finds the relevant context to hand to the LLM before it answers.
+- *Example*: `vector_store.similarity_search(question, k=3)` — embeds the question internally, then returns the 3 closest stored chunks by the same cosine similarity idea from Day 16.
+
+**top-k isn't always ranked by "contains the answer"**
+- *Definition*: the top-ranked chunk is the one whose embedding is semantically closest to the question, not necessarily the one that literally contains the fact being asked for.
+- *Why it matters*: a question like "how long do I have to request a refund" retrieved a chunk about *how* to request a refund as its top result, ranked above the chunk containing the actual "30 days" answer, because it shared more wording with the question. This is a common, real failure mode, not a bug, and it's the reason RAG systems retrieve several chunks rather than just one and let the LLM read all of them.
+- *Example*: `top-k=3` on the refund question returned the correct chunk in position 3, not position 1. A second question ("three failed login attempts") had the correct chunk in position 1. Same code, same settings, different outcome, because it depends on how closely the question's wording matches the chunk's wording, not just whether the chunk has the fact.
