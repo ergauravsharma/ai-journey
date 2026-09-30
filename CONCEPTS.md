@@ -318,3 +318,10 @@ GOOGLE_API_KEY=abc123...
 - *Definition*: the top-ranked chunk is the one whose embedding is semantically closest to the question, not necessarily the one that literally contains the fact being asked for.
 - *Why it matters*: a question like "how long do I have to request a refund" retrieved a chunk about *how* to request a refund as its top result, ranked above the chunk containing the actual "30 days" answer, because it shared more wording with the question. This is a common, real failure mode, not a bug, and it's the reason RAG systems retrieve several chunks rather than just one and let the LLM read all of them.
 - *Example*: `top-k=3` on the refund question returned the correct chunk in position 3, not position 1. A second question ("three failed login attempts") had the correct chunk in position 1. Same code, same settings, different outcome, because it depends on how closely the question's wording matches the chunk's wording, not just whether the chunk has the fact.
+
+## Day 20 — Assembling the pipeline in a notebook
+
+**Jupyter notebooks for exploratory work**
+- *Definition*: a `.ipynb` file made of cells that run independently and keep their output visible, rather than a `.py` script that runs top to bottom and prints to a terminal.
+- *Why it matters*: notebooks are the standard format for exploring data and pipelines step by step, since you can rerun one cell (like Cell 5's question) without re-running the slow or costly cells above it (like Cell 4's index load, or a from-scratch embed).
+- *Example*: `ingest_retrieve.ipynb` reused `load_documents`, `chunk_documents`, and the Chroma index-loading code from Days 17-19 as imports, then ran load → chunk → open index → retrieve as five separate cells, each showing its own output, confirming the same ranking behavior seen on Day 19.
