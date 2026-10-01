@@ -325,3 +325,13 @@ GOOGLE_API_KEY=abc123...
 - *Definition*: a `.ipynb` file made of cells that run independently and keep their output visible, rather than a `.py` script that runs top to bottom and prints to a terminal.
 - *Why it matters*: notebooks are the standard format for exploring data and pipelines step by step, since you can rerun one cell (like Cell 5's question) without re-running the slow or costly cells above it (like Cell 4's index load, or a from-scratch embed).
 - *Example*: `ingest_retrieve.ipynb` reused `load_documents`, `chunk_documents`, and the Chroma index-loading code from Days 17-19 as imports, then ran load → chunk → open index → retrieve as five separate cells, each showing its own output, confirming the same ranking behavior seen on Day 19.
+
+## Day 21 — RAG chain (retrieve → prompt → generate)
+
+**The full RAG chain**
+- *Definition*: retrieve the top-k relevant chunks for a question, insert them into a prompt as context, then have the LLM generate an answer grounded in that context.
+- *Why it matters*: this is the point where retrieval becomes useful to an actual user. Up through Day 20, a human still had to read the chunks and find the answer themselves.
+- *Example*: `rag.py`'s `answer()` does retrieve (`vector_store.similarity_search`) → format (`format_context`) → generate (`chain.invoke`), reusing Day 18's index and Day 19's retrieval logic rather than rewriting them.
+
+**"Only use the context" grounding instruction**
+- *Definition*: explicitly telling the model to answer only from the
