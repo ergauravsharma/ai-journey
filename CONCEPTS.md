@@ -335,3 +335,28 @@ GOOGLE_API_KEY=abc123...
 
 **"Only use the context" grounding instruction**
 - *Definition*: explicitly telling the model to answer only from the
+
+## Day 22 — Citations
+
+**Why "list every retrieved source" is wrong**
+- *Definition*: naively listing the source of every retrieved chunk as a citation, regardless of whether the LLM actually used that chunk to write the answer.
+- *Why it matters*: at k=5, some retrieved chunks are irrelevant filler, included only because the search always returns k results. Citing them alongside the real sources misleads the user into thinking they were relevant.
+- *Example*: a question about login lockouts cited both `troubleshooting.txt` (correct, actually used) and `refund_policy.txt` (wrong, an unrelated chunk that happened to be in the top 5).
+
+**Why a similarity-score threshold is also wrong**
+- *Definition*: trying to fix the above by only citing chunks whose similarity score clears some cutoff (e.g. distance ≤ 0.6).
+- *Why it matters*: similarity score measures how close a chunk is to the question's wording, not whether the LLM chose to use it. A threshold tuned to exclude one irrelevant chunk can just as easily exclude a chunk that genuinely was used, because there's no real relationship between "distance score" and "did the model cite this."
+- *Example*: a 0.6 cutoff correctly dropped `refund_policy.txt` from the login question, but also incorrectly dropped `troubleshooting.txt` from the Basic-vs-Pro question, even though its 25MB/100MB detail appeared in the final answer.
+
+**The fix: ask the model which sources it actually used**
+- *Definition*: using structured output to have the LLM report, alongside its answer, which source filenames it actually drew on, rather than inferring usage from any retrieval-side signal.
+- *Why it matters*: the LLM is the only party that actually knows what it used to write the answer. Retrieval distance is a proxy, and proxies fail. Asking directly removed both failure modes seen above, in the same two test cases, with no tuning needed.
+- *Example*:
+```python
+  class GroundedAnswer(BaseModel):
+      answer: str
+      sources_used: list[str]
+
+  structured_llm = llm.with_structured_output(GroundedAnswer)
+```
+  combined with a prompt instruction: "list ONLY the source filenames you actually drew on to write the answer, not every source that was provided to you."
