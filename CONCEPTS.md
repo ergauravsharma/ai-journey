@@ -360,3 +360,19 @@ GOOGLE_API_KEY=abc123...
   structured_llm = llm.with_structured_output(GroundedAnswer)
 ```
   combined with a prompt instruction: "list ONLY the source filenames you actually drew on to write the answer, not every source that was provided to you."
+
+  ## Day 23 — Multi-turn memory and the "only from context" guardrail
+
+**Testing the guardrail honestly, before trusting it**
+- *Definition*: actually running out-of-scope questions against the RAG chain, rather than assuming the "answer ONLY from context" instruction in the prompt is being followed just because it's written.
+- *Why it matters*: retrieval always returns k chunks regardless of relevance, so the LLM has *something* in its context even for an unrelated question. Whether it stays grounded despite that is a separate thing from whether the instruction exists, and needs to be tested, not assumed.
+- *Example*: both "What's the capital of France?" (obviously off-topic) and "Does CloudDesk support two-factor authentication?" (sounds in-domain, but genuinely uncovered) correctly returned "I don't have that information" with an empty sources list.
+
+**Multi-turn memory**
+- *Definition*: passing a running list of prior question/answer pairs into the prompt as conversation history, so the model can resolve references like "it," "that plan," or "which one" that only make sense in light of earlier turns.
+- *Why it matters*: a real chatbot gets follow-up questions, not just one-off isolated queries. Without history, "What about the Pro plan?" has no clear meaning on its own.
+- *Example*: "Which one has more storage?" correctly resolved to Basic vs Pro and answered 500GB vs 50GB, using only the prior two turns' history, no new information in the question itself to indicate what was being compared.
+
+**Retrieval uses the current question only, not the history**
+- *Definition*: the vector search step embeds and searches using just the latest question's wording; only the generation step (after retrieval) sees the full conversation history.
+- *Why it matters*: this worked because each follow-up question still contained enough specific wording ("Pro plan," "storage") to retrieve the right chunks on its own. A vaguer follow-up with no distinctive wording could retrieve irrelevant chunks even though a human reading the full conversation would know exactly what was meant, a real limitation of this simple design, not something today's testing hit, but worth knowing about.

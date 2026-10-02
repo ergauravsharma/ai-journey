@@ -24,7 +24,10 @@ prompt = ChatPromptTemplate.from_messages([
     "context below. If the answer isn't in the context, say you don't have that information "
     "rather than guessing.\n\nEach piece of context is labeled with its source filename. "
     "After answering, list ONLY the source filenames you actually drew on to write the "
-    "answer, not every source that was provided to you.\n\nContext:\n{context}"),
+    "answer, not every source that was provided to you.\n\nUse the conversation history "
+    "below to understand references like 'it' or 'that plan,' but still answer only from "
+    "the context, not from anything said earlier in the conversation.\n\n"
+    "Conversation history:\n{history}\n\nContext:\n{context}"),
     ("user", "{question}"),
 ])
 
@@ -41,25 +44,37 @@ def format_context(chunks: list) -> str:
     return "\n\n".join(parts)
 
 
-def answer(question: str, k: int = 5) -> dict:
-    """Retrieve relevant chunks for a question, generate an answer, and return it with the sources actually used."""
+def answer(question: str, history: list[dict] | None = None, k: int = 5) -> dict:
+    """Retrieve relevant chunks for a question, generate an answer using conversation
+    history to resolve references, and return it with the sources actually used."""
 
-    # Step 1: retrieve, same logic as Day 19
+    if history is None:
+        history = []
+
+    # Step 1: retrieve. We search using the question alone, not the history, since
+    # mixing in old questions would drift the embedding away from what's actually
+    # being asked right now
     vector_store = load_index()
     chunks = vector_store.similarity_search(question, k=k)
 
     # Step 2: build the prompt's context from those chunks
     context = format_context(chunks)
 
-    # Step 3: generate, asking the model itself which sources it actually used,
-    # rather than inferring it from retrieval distance (Day 22's lesson: distance
-    # doesn't reliably predict usage)
+    # Step 3: format the history as plain text for the prompt
+    history_text = "\n".join(
+        f"User: {turn['question']}\nAssistant: {turn['answer']}" for turn in history
+    ) or "(no previous turns)"
+
+    # Step 4: generate
     structured_llm = llm.with_structured_output(GroundedAnswer)
     chain = prompt | structured_llm
-    result: GroundedAnswer = chain.invoke({"context": context, "question": question})
+    result: GroundedAnswer = chain.invoke({
+        "context": context,
+        "question": question,
+        "history": history_text,
+    })
 
     return {"answer": result.answer, "sources": result.sources_used}
-
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
