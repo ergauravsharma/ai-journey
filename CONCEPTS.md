@@ -376,3 +376,18 @@ GOOGLE_API_KEY=abc123...
 **Retrieval uses the current question only, not the history**
 - *Definition*: the vector search step embeds and searches using just the latest question's wording; only the generation step (after retrieval) sees the full conversation history.
 - *Why it matters*: this worked because each follow-up question still contained enough specific wording ("Pro plan," "storage") to retrieve the right chunks on its own. A vaguer follow-up with no distinctive wording could retrieve irrelevant chunks even though a human reading the full conversation would know exactly what was meant, a real limitation of this simple design, not something today's testing hit, but worth knowing about.
+
+## Day 24 — Streamlit chat UI
+
+**st.chat_message and st.chat_input**
+- *Definition*: Streamlit's dedicated chat components. `st.chat_message("user" | "assistant")` renders a styled message bubble; `st.chat_input(...)` renders a fixed input box at the bottom of the page and returns the typed text only on the turn it's submitted.
+- *Why it matters*: these replace the text-area-and-button pattern from Project 1 with something that actually looks and behaves like a chat app, without writing any custom HTML or CSS.
+
+**st.session_state for persisting history across turns**
+- *Definition*: a dict-like object that survives Streamlit's reruns within one browser session. Streamlit reruns the entire script top to bottom on every interaction, so without session_state, the history list from Day 23 would reset every time.
+- *Why it matters*: this is what lets the chat remember earlier turns, both for redrawing old messages on screen, and for passing real history into `answer()` so multi-turn references like "which one" keep working, exactly as tested in Day 23, now inside a real UI instead of a standalone script.
+- *Example*: `if "history" not in st.session_state: st.session_state.history = []` initializes it once; every new turn appends to it with `st.session_state.history.append(...)`, same shape as Day 23's `test_memory.py` loop.
+
+**Guardrail held up inside a real multi-turn session**
+- *Definition*: re-verifying that the "answer only from context" behavior from Day 23 still works once real conversation history has built up, not just as an isolated first question.
+- *Why it matters*: an off-topic question ("What's the weather like today?") asked after three genuine CloudDesk turns still correctly declined, confirming the guardrail isn't fragile to context from an ongoing conversation.
