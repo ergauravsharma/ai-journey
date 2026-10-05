@@ -7,7 +7,7 @@ A 60-day hands-on journey building real, deployed AI projects — from first LLM
 | Project | Framework | LLM | Industry | Difficulty | Status |
 |---|---|---|---|---|---|
 | [Ticket Triage](./project-1-ticket-triage) | LangChain + Streamlit | Gemini 3.6 Flash | Customer Support | Beginner | ✅ Live |
-| RAG Chatbot | LangChain + Streamlit | Gemini 3.6 Flash | Knowledge Base | Intermediate | 🔜 Week 5 |
+| [RAG Chatbot](./project-2-rag-chatbot) | LangChain + Streamlit | Gemini 3.6 Flash | Knowledge Base | Intermediate | ✅ Live |
 | Agentic Triage System | LangGraph + FastAPI | Gemini 3.6 Flash | Customer Support | Advanced | 🔜 Week 8 |
 
 ## 📁 Repo structure
