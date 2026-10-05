@@ -1,5 +1,13 @@
 import streamlit as st
 from rag import answer  # Day 21-23's retrieve-prompt-generate chain, with memory and citations
+from pathlib import Path
+from build_index import build_index, PERSIST_DIR
+
+# The vector store is gitignored (regenerable, shouldn't be versioned), so on a
+# fresh deploy it won't exist yet. Build it once on first startup if missing.
+if not PERSIST_DIR.exists():
+    with st.spinner("Setting up the knowledge base for the first time..."):
+        build_index()
 
 st.set_page_config(page_title="CloudDesk Support Chat", page_icon="💬")
 
