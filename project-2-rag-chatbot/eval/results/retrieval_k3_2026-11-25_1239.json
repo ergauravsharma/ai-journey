@@ -1,0 +1,224 @@
+{
+  "k": 3,
+  "hit_rate_at_1": 0.8888888888888888,
+  "hit_rate_at_k": 1.0,
+  "mrr": 0.925925925925926,
+  "results": [
+    {
+      "id": "q01",
+      "type": "direct",
+      "question": "How long do I have to ask for a refund?",
+      "rank": 3,
+      "retrieved": [
+        "refund_policy.txt#chunk1",
+        "refund_policy.txt#chunk2",
+        "refund_policy.txt#chunk0"
+      ],
+      "top_chunk_preview": "To request a refund, contact support through the billing page in your account settings. Refunds are processed within 5 t"
+    },
+    {
+      "id": "q02",
+      "type": "paraphrased",
+      "question": "I bought the yearly plan last week. Can I still get my money back?",
+      "rank": 1,
+      "retrieved": [
+        "refund_policy.txt#chunk2",
+        "refund_policy.txt#chunk1",
+        "refund_policy.txt#chunk0"
+      ],
+      "top_chunk_preview": "If you were charged twice for the same subscription period, the duplicate charge is refunded automatically once our bill"
+    },
+    {
+      "id": "q03",
+      "type": "paraphrased",
+      "question": "My card was billed two times this month, what happens?",
+      "rank": 1,
+      "retrieved": [
+        "refund_policy.txt#chunk2",
+        "pricing_plans.txt#chunk3",
+        "refund_policy.txt#chunk1"
+      ],
+      "top_chunk_preview": "If you were charged twice for the same subscription period, the duplicate charge is refunded automatically once our bill"
+    },
+    {
+      "id": "q04",
+      "type": "direct",
+      "question": "How many days does it take for a refund to reach me?",
+      "rank": 1,
+      "retrieved": [
+        "refund_policy.txt#chunk1",
+        "refund_policy.txt#chunk2",
+        "refund_policy.txt#chunk0"
+      ],
+      "top_chunk_preview": "To request a refund, contact support through the billing page in your account settings. Refunds are processed within 5 t"
+    },
+    {
+      "id": "q05",
+      "type": "direct",
+      "question": "How much does the Pro plan cost?",
+      "rank": 1,
+      "retrieved": [
+        "pricing_plans.txt#chunk1",
+        "pricing_plans.txt#chunk3",
+        "pricing_plans.txt#chunk2"
+      ],
+      "top_chunk_preview": "Pro plan: $29 per month per user. Includes unlimited users, 500 GB of storage, priority email and chat support with a 4-"
+    },
+    {
+      "id": "q06",
+      "type": "paraphrased",
+      "question": "Is there a discount if I pay for a whole year up front?",
+      "rank": 1,
+      "retrieved": [
+        "pricing_plans.txt#chunk3",
+        "refund_policy.txt#chunk2",
+        "pricing_plans.txt#chunk2"
+      ],
+      "top_chunk_preview": "Annual billing saves 20% compared to monthly billing. You can upgrade or downgrade your plan at any time, and changes ta"
+    },
+    {
+      "id": "q07",
+      "type": "direct",
+      "question": "Which plan gives me single sign-on?",
+      "rank": 1,
+      "retrieved": [
+        "pricing_plans.txt#chunk2",
+        "pricing_plans.txt#chunk1",
+        "pricing_plans.txt#chunk3"
+      ],
+      "top_chunk_preview": "Enterprise plan: custom pricing. Includes unlimited storage, a dedicated account manager, single sign-on (SSO), and a 99"
+    },
+    {
+      "id": "q08",
+      "type": "direct",
+      "question": "How fast does support reply on the Basic plan?",
+      "rank": 3,
+      "retrieved": [
+        "pricing_plans.txt#chunk1",
+        "troubleshooting.txt#chunk1",
+        "pricing_plans.txt#chunk0"
+      ],
+      "top_chunk_preview": "Pro plan: $29 per month per user. Includes unlimited users, 500 GB of storage, priority email and chat support with a 4-"
+    },
+    {
+      "id": "q09",
+      "type": "paraphrased",
+      "question": "If I downgrade today, when does the change kick in?",
+      "rank": 1,
+      "retrieved": [
+        "pricing_plans.txt#chunk3",
+        "troubleshooting.txt#chunk3",
+        "refund_policy.txt#chunk1"
+      ],
+      "top_chunk_preview": "Annual billing saves 20% compared to monthly billing. You can upgrade or downgrade your plan at any time, and changes ta"
+    },
+    {
+      "id": "q10",
+      "type": "paraphrased",
+      "question": "I typed my password wrong a few times and now I can't get in. How long am I locked out?",
+      "rank": 1,
+      "retrieved": [
+        "troubleshooting.txt#chunk0",
+        "troubleshooting.txt#chunk3",
+        "troubleshooting.txt#chunk1"
+      ],
+      "top_chunk_preview": "CloudDesk Troubleshooting Guide  Login problems: If you cannot log in, first reset your password using the \"Forgot passw"
+    },
+    {
+      "id": "q11",
+      "type": "direct",
+      "question": "What is the biggest file a Pro user can upload?",
+      "rank": 1,
+      "retrieved": [
+        "troubleshooting.txt#chunk1",
+        "pricing_plans.txt#chunk1",
+        "pricing_plans.txt#chunk2"
+      ],
+      "top_chunk_preview": "Upload failures: Files larger than 25 MB cannot be uploaded on the Free and Basic plans. Pro plan users can upload files"
+    },
+    {
+      "id": "q12",
+      "type": "paraphrased",
+      "question": "The app on my phone keeps closing by itself. What should I do?",
+      "rank": 1,
+      "retrieved": [
+        "troubleshooting.txt#chunk2",
+        "troubleshooting.txt#chunk1",
+        "troubleshooting.txt#chunk0"
+      ],
+      "top_chunk_preview": "Mobile app crashes: Make sure you are running the latest version of the CloudDesk app. The app requires Android 10 or la"
+    },
+    {
+      "id": "q13",
+      "type": "paraphrased",
+      "question": "My edits are taking ages to show up on my other laptop.",
+      "rank": 1,
+      "retrieved": [
+        "troubleshooting.txt#chunk3",
+        "troubleshooting.txt#chunk2",
+        "troubleshooting.txt#chunk0"
+      ],
+      "top_chunk_preview": "Sync delays: Changes normally sync within 10 seconds. If sync takes longer than a minute, check your internet connection"
+    },
+    {
+      "id": "q14",
+      "type": "direct",
+      "question": "How long is the password reset link valid?",
+      "rank": 1,
+      "retrieved": [
+        "troubleshooting.txt#chunk0",
+        "troubleshooting.txt#chunk3",
+        "refund_policy.txt#chunk1"
+      ],
+      "top_chunk_preview": "CloudDesk Troubleshooting Guide  Login problems: If you cannot log in, first reset your password using the \"Forgot passw"
+    },
+    {
+      "id": "q17",
+      "type": "paraphrased",
+      "question": "Will the app work on my old Android 9 phone?",
+      "rank": 1,
+      "retrieved": [
+        "troubleshooting.txt#chunk2",
+        "pricing_plans.txt#chunk3",
+        "troubleshooting.txt#chunk1"
+      ],
+      "top_chunk_preview": "Mobile app crashes: Make sure you are running the latest version of the CloudDesk app. The app requires Android 10 or la"
+    },
+    {
+      "id": "q18",
+      "type": "direct",
+      "question": "Which file formats can I upload?",
+      "rank": 1,
+      "retrieved": [
+        "troubleshooting.txt#chunk1",
+        "pricing_plans.txt#chunk2",
+        "troubleshooting.txt#chunk2"
+      ],
+      "top_chunk_preview": "Upload failures: Files larger than 25 MB cannot be uploaded on the Free and Basic plans. Pro plan users can upload files"
+    },
+    {
+      "id": "q19",
+      "type": "paraphrased",
+      "question": "We're on an Enterprise contract. Does the 30-day refund rule apply to us?",
+      "rank": 1,
+      "retrieved": [
+        "refund_policy.txt#chunk2",
+        "refund_policy.txt#chunk1",
+        "refund_policy.txt#chunk0"
+      ],
+      "top_chunk_preview": "If you were charged twice for the same subscription period, the duplicate charge is refunded automatically once our bill"
+    },
+    {
+      "id": "q20",
+      "type": "paraphrased",
+      "question": "How reliable is the service if we go with the top plan?",
+      "rank": 1,
+      "retrieved": [
+        "pricing_plans.txt#chunk2",
+        "pricing_plans.txt#chunk3",
+        "pricing_plans.txt#chunk1"
+      ],
+      "top_chunk_preview": "Enterprise plan: custom pricing. Includes unlimited storage, a dedicated account manager, single sign-on (SSO), and a 99"
+    }
+  ]
+}

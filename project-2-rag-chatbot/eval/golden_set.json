@@ -1,0 +1,142 @@
+[
+  {
+    "id": "q01",
+    "question": "How long do I have to ask for a refund?",
+    "expected_source": "refund_policy.txt",
+    "expected_fact": "within 30 days",
+    "type": "direct"
+  },
+  {
+    "id": "q02",
+    "question": "I bought the yearly plan last week. Can I still get my money back?",
+    "expected_source": "refund_policy.txt",
+    "expected_fact": "within 14 days",
+    "type": "paraphrased"
+  },
+  {
+    "id": "q03",
+    "question": "My card was billed two times this month, what happens?",
+    "expected_source": "refund_policy.txt",
+    "expected_fact": "refunded automatically",
+    "type": "paraphrased"
+  },
+  {
+    "id": "q04",
+    "question": "How many days does it take for a refund to reach me?",
+    "expected_source": "refund_policy.txt",
+    "expected_fact": "5 to 7 business days",
+    "type": "direct"
+  },
+  {
+    "id": "q05",
+    "question": "How much does the Pro plan cost?",
+    "expected_source": "pricing_plans.txt",
+    "expected_fact": "$29 per month",
+    "type": "direct"
+  },
+  {
+    "id": "q06",
+    "question": "Is there a discount if I pay for a whole year up front?",
+    "expected_source": "pricing_plans.txt",
+    "expected_fact": "saves 20%",
+    "type": "paraphrased"
+  },
+  {
+    "id": "q07",
+    "question": "Which plan gives me single sign-on?",
+    "expected_source": "pricing_plans.txt",
+    "expected_fact": "single sign-on",
+    "type": "direct"
+  },
+  {
+    "id": "q08",
+    "question": "How fast does support reply on the Basic plan?",
+    "expected_source": "pricing_plans.txt",
+    "expected_fact": "48-hour",
+    "type": "direct"
+  },
+  {
+    "id": "q09",
+    "question": "If I downgrade today, when does the change kick in?",
+    "expected_source": "pricing_plans.txt",
+    "expected_fact": "start of your next billing cycle",
+    "type": "paraphrased"
+  },
+  {
+    "id": "q10",
+    "question": "I typed my password wrong a few times and now I can't get in. How long am I locked out?",
+    "expected_source": "troubleshooting.txt",
+    "expected_fact": "locked for 30 minutes",
+    "type": "paraphrased"
+  },
+  {
+    "id": "q11",
+    "question": "What is the biggest file a Pro user can upload?",
+    "expected_source": "troubleshooting.txt",
+    "expected_fact": "100 MB",
+    "type": "direct"
+  },
+  {
+    "id": "q12",
+    "question": "The app on my phone keeps closing by itself. What should I do?",
+    "expected_source": "troubleshooting.txt",
+    "expected_fact": "uninstall and reinstall",
+    "type": "paraphrased"
+  },
+  {
+    "id": "q13",
+    "question": "My edits are taking ages to show up on my other laptop.",
+    "expected_source": "troubleshooting.txt",
+    "expected_fact": "within 10 seconds",
+    "type": "paraphrased"
+  },
+  {
+    "id": "q14",
+    "question": "How long is the password reset link valid?",
+    "expected_source": "troubleshooting.txt",
+    "expected_fact": "expire after 15 minutes",
+    "type": "direct"
+  },
+  {
+    "id": "q15",
+    "question": "Do you have a desktop app for Linux?",
+    "expected_source": null,
+    "expected_fact": null,
+    "type": "out_of_scope"
+  },
+   {
+    "id": "q16",
+    "question": "Can I pay with PayPal?",
+    "expected_source": null,
+    "expected_fact": null,
+    "type": "out_of_scope"
+  },
+  {
+    "id": "q17",
+    "question": "Will the app work on my old Android 9 phone?",
+    "expected_source": "troubleshooting.txt",
+    "expected_fact": "Android 10 or later",
+    "type": "paraphrased"
+  },
+  {
+    "id": "q18",
+    "question": "Which file formats can I upload?",
+    "expected_source": "troubleshooting.txt",
+    "expected_fact": "PDF, DOCX, PNG, and JPG",
+    "type": "direct"
+  },
+  {
+    "id": "q19",
+    "question": "We're on an Enterprise contract. Does the 30-day refund rule apply to us?",
+    "expected_source": "refund_policy.txt",
+    "expected_fact": "signed agreement",
+    "type": "paraphrased"
+  },
+  {
+    "id": "q20",
+    "question": "How reliable is the service if we go with the top plan?",
+    "expected_source": "pricing_plans.txt",
+    "expected_fact": "99.9% uptime",
+    "type": "paraphrased"
+  }
+]
