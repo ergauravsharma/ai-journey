@@ -1,0 +1,50 @@
+{
+  "k": 5,
+  "judge_model": "gemini-3.6-flash",
+  "judge_correct": 0.6666666666666666,
+  "cited_right_source": 1.0,
+  "results": [
+    {
+      "id": "q01",
+      "type": "direct",
+      "question": "How long do I have to ask for a refund?",
+      "expected_fact": "within 30 days",
+      "answer": "Generally, customers may request a full refund within 30 days of their initial purchase. However, annual plans are refundable within 14 days of purchase, and Enterprise contracts follow the terms specified in the signed agreement.",
+      "sources": [
+        "refund_policy.txt"
+      ],
+      "cited_right_source": true,
+      "exact_match": true,
+      "judge_verdict": "partially_correct",
+      "judge_reason": "The answer includes the golden fact of 30 days for general purchases, but introduces specific exceptions like 14 days for annual plans that qualify the overall timeframe."
+    },
+    {
+      "id": "q02",
+      "type": "paraphrased",
+      "question": "I bought the yearly plan last week. Can I still get my money back?",
+      "expected_fact": "within 14 days",
+      "answer": "Yes, you can still get a refund. Annual plans are refundable within 14 days of purchase. Since you bought it last week (7 days ago), you are within the 14-day window. To request a refund, contact support through the billing page in your account settings.",
+      "sources": [
+        "refund_policy.txt"
+      ],
+      "cited_right_source": true,
+      "exact_match": true,
+      "judge_verdict": "correct",
+      "judge_reason": "The answer correctly states that annual plans are refundable within 14 days of purchase."
+    },
+    {
+      "id": "q03",
+      "type": "paraphrased",
+      "question": "My card was billed two times this month, what happens?",
+      "expected_fact": "refunded automatically",
+      "answer": "If you were charged twice for the same subscription period, the duplicate charge is refunded automatically once the billing team confirms it. Refunds are processed within 5 to 7 business days and returned to the original payment method. To request or follow up on a refund, you can contact support through the billing page in your account settings.",
+      "sources": [
+        "refund_policy.txt"
+      ],
+      "cited_right_source": true,
+      "exact_match": true,
+      "judge_verdict": "correct",
+      "judge_reason": "The answer accurately states that duplicate charges are refunded automatically, matching the golden fact."
+    }
+  ]
+}
