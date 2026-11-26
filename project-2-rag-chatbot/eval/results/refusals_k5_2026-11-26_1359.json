@@ -1,0 +1,56 @@
+{
+  "k": 5,
+  "refusal_rate": 1.0,
+  "results": [
+    {
+      "id": "q15",
+      "question": "Do you have a desktop app for Linux?",
+      "answer": "I don't have that information based on the provided context.",
+      "sources": [],
+      "refused": true,
+      "cited_sources_anyway": false
+    },
+    {
+      "id": "q16",
+      "question": "Can I pay with PayPal?",
+      "answer": "I do not have information in the provided context about whether PayPal is an accepted payment method.",
+      "sources": [],
+      "refused": true,
+      "cited_sources_anyway": false
+    },
+    {
+      "id": "q21",
+      "question": "What uptime do you guarantee on the Pro plan?",
+      "answer": "I do not have information about an uptime guarantee for the Pro plan. The context only mentions a 99.9% uptime guarantee for the Enterprise plan.",
+      "sources": [
+        "pricing_plans.txt"
+      ],
+      "refused": true,
+      "cited_sources_anyway": true
+    },
+    {
+      "id": "q22",
+      "question": "Can I get a free trial of the Pro plan before paying?",
+      "answer": "I don't have that information based on the provided context.",
+      "sources": [],
+      "refused": true,
+      "cited_sources_anyway": false
+    },
+    {
+      "id": "q23",
+      "question": "What is your support phone number?",
+      "answer": "I do not have information about a support phone number in the provided context.",
+      "sources": [],
+      "refused": true,
+      "cited_sources_anyway": false
+    },
+    {
+      "id": "q24",
+      "question": "Do you offer a discount for students or nonprofits?",
+      "answer": "I don't have information on whether CloudDesk offers discounts for students or nonprofits.",
+      "sources": [],
+      "refused": true,
+      "cited_sources_anyway": false
+    }
+  ]
+}
