@@ -138,5 +138,34 @@
     "expected_source": "pricing_plans.txt",
     "expected_fact": "99.9% uptime",
     "type": "paraphrased"
+  },
+  {
+    "id": "q21",
+    "question": "What uptime do you guarantee on the Pro plan?",
+    "expected_source": null,
+    "expected_fact": null,
+    "type": "out_of_scope"
+  },
+  {
+    "id": "q22",
+    "question": "Can I get a free trial of the Pro plan before paying?",
+    "expected_source": null,
+    "expected_fact": null,
+    "type": "out_of_scope"
+  },
+  {
+    "id": "q23",
+    "question": "What is your support phone number?",
+    "expected_source": null,
+    "expected_fact": null,
+    "type": "out_of_scope"
+  },
+  {
+    "id": "q24",
+    "question": "Do you offer a discount for students or nonprofits?",
+    "expected_source": null,
+    "expected_fact": null,
+    "type": "out_of_scope"
   }
+
 ]
