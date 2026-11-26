@@ -124,6 +124,30 @@ def load_golden_set(path: Path) -> list[dict]:
         return json.load(f)
 
 
+def call_with_retry(fn, *args, attempts: int = 3, first_wait: float = 15):
+    """Call fn(*args). If Google says it's overloaded (503), wait and try again.
+
+    This is "exponential backoff": wait 15s, then 30s, doubling each time, so
+    we don't hammer a server that's already struggling. Any OTHER error
+    (like 429 = daily quota used up) is raised straight away, because
+    waiting a few seconds won't fix it."""
+    wait = first_wait
+
+    for attempt in range(1, attempts + 1):
+        try:
+            return fn(*args)  # success: hand the result straight back
+        except Exception as error:
+            overloaded = "503" in str(error) or "UNAVAILABLE" in str(error)
+
+            # A different error, or this was our last try: stop and show it
+            if not overloaded or attempt == attempts:
+                raise
+
+            print(f"   Gemini is busy (503). Waiting {wait:.0f}s, then try {attempt + 1} of {attempts}...")
+            time.sleep(wait)
+            wait *= 2  # double the wait before the next try
+
+
 def evaluate(answer_fn, judge, golden_set: list[dict], k: int, delay: float) -> list[dict]:
     """Ask the chatbot every in-scope question, then grade each answer twice.
 
@@ -135,8 +159,8 @@ def evaluate(answer_fn, judge, golden_set: list[dict], k: int, delay: float) -> 
     for number, item in enumerate(in_scope, start=1):
         print(f"[{number}/{len(in_scope)}] {item['id']}: {item['question'][:60]}")
 
-        # Step 1: get the chatbot's real answer (retrieval + generation)
-        bot = answer_fn(item["question"], k)
+        # Step 1: get the chatbot's real answer (retries if Gemini is busy)
+        bot = call_with_retry(answer_fn, item["question"], k)
 
         # Step 2: grade with the string check (None if the exercise isn't done yet)
         try:
@@ -144,8 +168,8 @@ def evaluate(answer_fn, judge, golden_set: list[dict], k: int, delay: float) -> 
         except NotImplementedError:
             matched = None
 
-        # Step 3: grade with the LLM judge
-        verdict: JudgeVerdict = judge.invoke({
+        # Step 3: grade with the LLM judge (also retries if Gemini is busy)
+        verdict: JudgeVerdict = call_with_retry(judge.invoke, {
             "question": item["question"],
             "expected_fact": item["expected_fact"],
             "answer": bot["answer"],
@@ -237,8 +261,9 @@ def save_results(results: list[dict], k: int) -> Path:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Evaluate answer quality with an LLM judge.")
     parser.add_argument("--k", type=int, default=5, help="chunks to retrieve per question (app uses 5)")
-    parser.add_argument("--limit", type=int, default=None, help="only run the first N in-scope questions")
+    parser.add_argument("--limit", type=int, default=None, help="only run N in-scope questions")
     parser.add_argument("--delay", type=float, default=0, help="seconds to wait between questions")
+    parser.add_argument("--start", type=int, default=0, help="skip the first N in-scope questions (to run in batches)")
     args = parser.parse_args()
 
     # Imported here (not at the top) so exact_match() can be tested offline
@@ -247,12 +272,16 @@ if __name__ == "__main__":
     def rag_answer(question: str, k: int) -> dict:
         return answer(question, history=[], k=k)  # fresh conversation per question
 
+    # Load all questions, then keep only the in-scope ones (refusals were Day 28)
     golden_set = load_golden_set(GOLDEN_SET_PATH)
-    if args.limit:
-        in_scope = [q for q in golden_set if q["type"] != "out_of_scope"]
-        golden_set = in_scope[: args.limit]
+    in_scope = [q for q in golden_set if q["type"] != "out_of_scope"]
 
-    results = evaluate(rag_answer, make_judge(), golden_set, args.k, args.delay)
+    # Slice out one batch: from --start, and --limit questions long.
+    # end=None means "go to the end of the list".
+    end = args.start + args.limit if args.limit else None
+    batch = in_scope[args.start:end]
+
+    results = evaluate(rag_answer, make_judge(), batch, args.k, args.delay)
     print_report(results)
     saved_to = save_results(results, args.k)
     print(f"\nSaved results to {saved_to.relative_to(PROJECT_DIR)}")
